@@ -1,18 +1,25 @@
 package main
 
 import (
-	"fmt"
+	"github.com/NewChakrit/golang_web_development/config"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	server := &http.Server{
-		Addr: ":8080",
-	}
-
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		fmt.Fprintf(writer, "ok")
+	handler := gin.Default()
+	handler.GET("/user", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "Hello World",
+		})
 	})
+	config.Config.LoadConfig()
+
+	server := &http.Server{
+		Addr:    config.Config.AppPort,
+		Handler: handler,
+	}
 
 	server.ListenAndServe()
 }
