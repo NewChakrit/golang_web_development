@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
+	"github.com/NewChakrit/golang_web_development/config"
 	"log"
 	"os"
 
@@ -12,9 +13,8 @@ import (
 var DB *pgx.Conn
 
 func InitDB() {
-	urlExample := "postgres://postgres:P@ssw0rd@localhost:5433/tasks?sslmode=disable"
 	var err error
-	DB, err = pgx.Connect(context.Background(), urlExample)
+	DB, err = pgx.Connect(context.Background(), config.Config.DBPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
