@@ -6,3 +6,10 @@ Integrate Google OAuth for User Authentication in Go Servers. ( Frontend app in 
 Build fast and scalable web servers with the Gin framework in Go
 Deploy to AWS Elastic Beanstalk
 Security best practice to connect with AWS RDS.
+
+Command:
+docker
+- docker compose up -d
+
+migrate database
+-  migrate -database 'postgres://postgres:P@ssw0rd@localhost:5433/tasks?sslmode=disable' -path db/migrations up
