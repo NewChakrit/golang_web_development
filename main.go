@@ -1,25 +1,29 @@
 package main
 
 import (
+	"context"
 	"github.com/NewChakrit/golang_web_development/config"
+	"github.com/NewChakrit/golang_web_development/db"
+	"github.com/NewChakrit/golang_web_development/routes"
+	"log"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	handler := gin.Default()
-	handler.GET("/user", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "Hello World",
-		})
-	})
-	config.Config.LoadConfig()
+	handler := routes.MounteRoutes()
+
+	db.InitDB()
 
 	server := &http.Server{
 		Addr:    config.Config.AppPort,
 		Handler: handler,
 	}
 
-	server.ListenAndServe()
+	config.Config.LoadConfig()
+	println("Server running at", config.Config.AppPort)
+	defer db.DB.Close(context.Background())
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
 }
