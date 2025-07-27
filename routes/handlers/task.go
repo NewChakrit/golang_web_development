@@ -5,13 +5,23 @@ import (
 	"net/http"
 )
 
+type PostTaskPayload struct {
+	Title       string `json:"title" binding:"required"`
+	Description string `json:"description" binding:"required"`
+	Status      string `json:"status" binding:"required"`
+}
+
 func SaveTask(ctx *gin.Context) {
-	_, err := ctx.GetRawData()
+	var payload PostTaskPayload
+
+	err := ctx.ShouldBindJSON(&payload)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Task received",
+		"payload": payload,
 	})
 }
