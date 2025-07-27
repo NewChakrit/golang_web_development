@@ -14,11 +14,17 @@ func MounteRoutes() *gin.Engine {
 		})
 	})
 
-	handler.POST("/task", handlers.SaveTask)
+	taskRoutes := handler.Group("/task")
+	{
+		taskRoutes.POST("/", handlers.SaveTask)
+		taskRoutes.GET("/", handlers.ReadTask)
+	}
+
 	handler.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"message": "Route not found",
 		})
 	})
+
 	return handler
 }

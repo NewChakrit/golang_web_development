@@ -25,3 +25,22 @@ func SaveTask(ctx *gin.Context) {
 		"id":      id,
 	})
 }
+
+func ReadTask(ctx *gin.Context) {
+	//var payload db.PostTaskPayload
+	//
+	//if err := ctx.ShouldBindJSON(&payload); err != nil {
+	//	ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+	//	return
+	//}
+	//
+	tasks, err := db.TaskRepository.ReadTask()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": tasks,
+	})
+}
