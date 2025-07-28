@@ -17,7 +17,9 @@ func MounteRoutes() *gin.Engine {
 	taskRoutes := handler.Group("/task")
 	{
 		taskRoutes.POST("/", handlers.SaveTask)
+		taskRoutes.PATCH("/", handlers.UpdateTask)
 		taskRoutes.GET("/", handlers.ReadTask)
+		taskRoutes.DELETE("/:id", handlers.DeleteTask)
 	}
 
 	handler.NoRoute(func(ctx *gin.Context) {
